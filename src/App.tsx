@@ -3,6 +3,7 @@ import { Contact, Footer } from "./sections/Contact";
 import { Experience, OrgBand } from "./sections/Experience";
 import { Header } from "./sections/Header";
 import { Hero } from "./sections/Hero";
+import { Impact } from "./sections/Impact";
 import { ProfileBento } from "./sections/Profile";
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
         <main id="main">
           <Hero />
           <OrgBand />
+          <Impact />
           <Experience />
           <ProfileBento />
           <Contact />

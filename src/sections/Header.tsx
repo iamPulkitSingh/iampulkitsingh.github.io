@@ -6,6 +6,7 @@ import { profile } from "@/profile";
 import { LinkedInIcon, Monogram, ring } from "./ui";
 
 const nav = [
+  { href: "#impact", label: "Impact" },
   { href: "#experience", label: "Experience" },
   { href: "#skills", label: "Skills" },
   { href: "#education", label: "Education" },

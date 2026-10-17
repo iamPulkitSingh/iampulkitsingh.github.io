@@ -55,6 +55,17 @@ function Timeline() {
                 {fmtRange(r.start, r.end)} · {fmtDuration(monthsBetween(r.start, r.end))}
                 {r.location && <> · {r.location}</>}
               </p>
+              {r.summary && <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink">{r.summary}</p>}
+              {r.highlights && (
+                <ul className="mt-3 max-w-2xl space-y-2">
+                  {r.highlights.map((h) => (
+                    <li key={h} className="flex gap-2.5 text-[14.5px] leading-relaxed text-ink-soft">
+                      <span className="mt-[9px] size-1.5 shrink-0 rounded-full bg-accent/70" aria-hidden />
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </li>
         );
@@ -74,8 +85,8 @@ export function Experience() {
           </h2>
         </Rise>
 
-        <Rise className={cn(tile, "mt-10 grid gap-8 p-6 sm:p-8 lg:grid-cols-[280px_1fr] lg:gap-14 lg:p-10")}>
-          <div>
+        <Rise className={cn(tile, "mt-10 grid gap-8 overflow-visible p-6 sm:p-8 lg:grid-cols-[280px_1fr] lg:gap-14 lg:p-10")}>
+          <div className="lg:sticky lg:top-24 lg:self-start">
             <div className="grid size-14 place-items-center rounded-2xl bg-ink text-[15px] font-extrabold tracking-[-0.02em] text-white" aria-hidden>
               {exl.company}
             </div>

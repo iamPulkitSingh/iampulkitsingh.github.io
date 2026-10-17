@@ -1,5 +1,5 @@
 import { useRef, type ReactNode, type RefObject } from "react";
-import { BadgeCheck, Boxes, ChartNoAxesCombined, Compass, GraduationCap, Sparkles, Users } from "lucide-react";
+import { Award, BadgeCheck, Compass, FileScan, GraduationCap, SquareKanban, Sparkles, Trophy, Users } from "lucide-react";
 import { AnimatedBeam } from "@/components/magicui/animated-beam";
 import { BorderBeam } from "@/components/magicui/border-beam";
 import { NumberTicker } from "@/components/magicui/number-ticker";
@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { earlier, education, fmtRange, profile } from "@/profile";
 import { Rise, eyebrow, h2, tile } from "./ui";
 
-const skillIcons = [Sparkles, Boxes, Compass];
+const skillIcons = [Compass, SquareKanban, Sparkles];
 const beam = { pathColor: "#0E1A2B", pathOpacity: 0.1, pathWidth: 2, gradientStartColor: "#2B54D9", gradientStopColor: "#F0B35A", duration: 3.4 };
 
 function Node({ nodeRef, children, big }: { nodeRef: RefObject<HTMLDivElement | null>; children: ReactNode; big?: boolean }) {
@@ -36,7 +36,7 @@ function SkillsTile() {
   return (
     <div className="flex h-full flex-col p-6 sm:p-8">
       <p className={eyebrow}>Top skills</p>
-      <h3 className="mt-1 text-[24px] leading-tight font-extrabold tracking-[-0.04em] text-ink sm:text-[28px]">Generative AI, product and analytics.</h3>
+      <h3 className="mt-1 text-[24px] leading-tight font-extrabold tracking-[-0.04em] text-ink sm:text-[28px]">Product, delivery and generative AI.</h3>
       <div ref={box} className="relative mt-8 flex flex-1 flex-col items-center justify-between gap-12 sm:flex-row sm:gap-6 sm:px-2">
         <ul className="flex w-full justify-between gap-2 sm:w-auto sm:flex-col sm:gap-6">
           {profile.topSkills.map((s, i) => {
@@ -56,11 +56,11 @@ function SkillsTile() {
         </Node>
         <div className="flex flex-col items-center gap-2 text-center sm:flex-row sm:gap-3 sm:text-left">
           <Node nodeRef={out}>
-            <ChartNoAxesCombined size={20} />
+            <FileScan size={20} />
           </Node>
           <span className="text-[13px] leading-tight font-bold text-ink sm:text-[15px]">
-            Digital Analytics
-            <span className="block text-[12.5px] font-semibold text-ink-soft">at EXL</span>
+            AI/ML &amp; IDP products
+            <span className="block text-[12.5px] font-semibold text-ink-soft">for insurance &amp; banking</span>
           </span>
         </div>
         {skillRefs.map((r, i) => (
@@ -68,6 +68,53 @@ function SkillsTile() {
         ))}
         <AnimatedBeam containerRef={box} fromRef={hub} toRef={out} delay={1.4} {...beam} />
       </div>
+    </div>
+  );
+}
+
+function ToolkitTile() {
+  return (
+    <div className="p-6 sm:p-8">
+      <p className={eyebrow}>Toolkit</p>
+      <h3 className="mt-1 text-[24px] leading-tight font-extrabold tracking-[-0.04em] text-ink">From requirements to rollout.</h3>
+      <div className="mt-6 grid gap-5 sm:grid-cols-2">
+        {profile.skillGroups.map((g) => (
+          <div key={g.name}>
+            <p className="text-[12px] font-bold tracking-[0.06em] text-ink-soft uppercase">{g.name}</p>
+            <ul className="mt-2 flex flex-wrap gap-1.5">
+              {g.items.map((it) => (
+                <li key={it} className="rounded-full bg-mist px-3 py-1.5 text-[13px] font-semibold text-ink">
+                  {it}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function AwardsTile() {
+  return (
+    <div className="relative flex h-full flex-col bg-ink p-6 text-white sm:p-8">
+      <div className="pointer-events-none absolute -top-20 -right-16 size-64 rounded-full bg-accent/50 blur-3xl" aria-hidden />
+      <p className="relative flex items-center gap-1.5 text-[13px] font-semibold text-[#AFC3FF]">
+        <Trophy size={15} /> Awards at EXL
+      </p>
+      <ul className="relative mt-5 space-y-3">
+        {profile.awards.map((a, i) => (
+          <li key={a.name} className="flex items-center gap-3 rounded-2xl bg-white/[0.07] p-4 ring-1 ring-white/10">
+            <span className={cn("grid size-11 shrink-0 place-items-center rounded-xl", i === 0 ? "bg-accent text-white" : "bg-white/10 text-[#AFC3FF]")}>
+              {i === 0 ? <Trophy size={19} /> : <Award size={19} />}
+            </span>
+            <div>
+              <p className="text-[16px] leading-tight font-extrabold tracking-[-0.02em]">{a.name}</p>
+              <p className="mt-0.5 text-[13px] text-white/70 tabular-nums">{a.year}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -140,6 +187,12 @@ export function ProfileBento() {
         <div className="mt-10 grid gap-4 lg:grid-cols-3">
           <Rise className={cn(tile, "lg:col-span-2")}>
             <SkillsTile />
+          </Rise>
+          <Rise delay={0.06} className={tile}>
+            <AwardsTile />
+          </Rise>
+          <Rise className={cn(tile, "lg:col-span-2")}>
+            <ToolkitTile />
           </Rise>
           <Rise delay={0.06} className={tile}>
             <CertificationsTile />

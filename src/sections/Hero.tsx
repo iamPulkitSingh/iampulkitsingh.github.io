@@ -1,9 +1,9 @@
 import { type ReactNode } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { BadgeCheck, GraduationCap, MapPin, Sparkles } from "lucide-react";
+import { Award, BriefcaseBusiness, GraduationCap, Trophy } from "lucide-react";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import { cn } from "@/lib/utils";
-import { NOW, education, exl, exlYears, inWords, profile, traineeToAvpYears, type YM } from "@/profile";
+import { NOW, education, exl, experienceYears, impact, inWords, profile, type YM } from "@/profile";
 import { Chip, EmailCTA, LinkedInIcon, OpenDot, ring } from "./ui";
 
 /* ------------------------------------------------------- career chart maths */
@@ -112,12 +112,13 @@ function CareerChart() {
   );
 }
 
-function Kpi({ label, value, unit, delay }: { label: string; value: number; unit?: string; delay: number }) {
+function Kpi({ label, value, unit, prefix, decimals = 0, delay }: { label: string; value: number; unit?: string; prefix?: string; decimals?: number; delay: number }) {
   return (
     <div className="rounded-2xl bg-mist/70 px-3 py-3 sm:px-4">
       <p className="text-[11.5px] font-semibold text-ink-soft sm:text-[12px]">{label}</p>
       <p className="mt-1 flex items-baseline gap-1">
-        <NumberTicker value={value} delay={delay} className="text-[28px] leading-none font-extrabold tracking-[-0.05em] text-ink sm:text-[34px]" />
+        {prefix && <span className="text-[18px] font-extrabold text-accent sm:text-[20px]">{prefix}</span>}
+        <NumberTicker value={value} delay={delay} decimalPlaces={decimals} className="text-[28px] leading-none font-extrabold tracking-[-0.05em] text-ink sm:text-[34px]" />
         {unit && <span className="text-[13px] font-bold text-ink-soft">{unit}</span>}
       </p>
     </div>
@@ -141,9 +142,9 @@ function Dashboard() {
         </Chip>
       </div>
       <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
-        <Kpi label="Years at EXL" value={exlYears} unit="yrs" delay={0.6} />
-        <Kpi label="Roles at EXL" value={exl.roles.length} delay={0.75} />
-        <Kpi label="To AVP in" value={Math.round(traineeToAvpYears)} unit="yrs" delay={0.9} />
+        <Kpi label="Experience" value={experienceYears} unit="yrs" delay={0.6} />
+        <Kpi label="Pipeline" prefix="$" value={impact.pipeline} decimals={1} unit="M" delay={0.75} />
+        <Kpi label="Model accuracy" value={impact.accuracy.to[1]} unit="%" delay={0.9} />
       </div>
       <div className="mt-5 px-1 pb-1">
         <CareerChart />
@@ -181,7 +182,7 @@ export function Hero() {
     show: { y: 0, opacity: 1, filter: "blur(0px)", transition: { type: "spring" as const, stiffness: 120, damping: 18 } },
   };
   const line1 = profile.name.split(" ");
-  const line2 = profile.title.split(" ");
+  const line2 = `${profile.positioning}.`.split(" ");
   const [iim, nit] = education;
 
   return (
@@ -200,7 +201,7 @@ export function Hero() {
             </>
           ) : (
             <>
-              <MapPin size={13} className="text-accent" /> Based in {profile.location}
+              <BriefcaseBusiness size={14} className="text-accent" /> {profile.title} at {exl.company}
             </>
           )}
         </motion.p>
@@ -212,7 +213,7 @@ export function Hero() {
           className="mx-auto mt-6 max-w-5xl text-[46px] leading-[0.98] font-extrabold tracking-[-0.055em] text-ink sm:text-[72px] lg:text-[88px]"
         >
           <span className="sr-only">
-            {profile.name}, {profile.title}
+            {profile.name}, {profile.positioning}
           </span>
           {line1.map((w) => (
             <motion.span key={w} variants={item} className="mr-[0.22em] inline-block last:mr-0" aria-hidden>
@@ -228,8 +229,7 @@ export function Hero() {
         </motion.h1>
         <motion.div initial={reduce ? false : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.75, duration: 0.6 }}>
           <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-relaxed text-ink-soft sm:text-[19px]">
-            <span className="capitalize">{inWords(exlYears)}</span> years at EXL, from management trainee to AVP. Before that, an MBA from IIM Calcutta and a mechanical
-            engineering degree from NIT Kurukshetra.
+            <span className="capitalize">{inWords(experienceYears)}</span> years {profile.summary} MBA from IIM Calcutta; mechanical engineer from NIT Kurukshetra.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <EmailCTA />
@@ -280,7 +280,7 @@ export function Hero() {
             </IconBadge>
             <div>
               <p className="text-[14px] font-bold text-ink">{iim.short}</p>
-              <p className="text-[12px] text-ink-soft">MBA · {iim.years}</p>
+              <p className="text-[12px] text-ink-soft">MBA · {iim.years.replace(/ /g, "")}</p>
             </div>
           </div>
         </Floating>
@@ -291,30 +291,23 @@ export function Hero() {
             </IconBadge>
             <div>
               <p className="text-[14px] font-bold text-ink">{nit.short}</p>
-              <p className="text-[12px] text-ink-soft">
-                {nit.field} · {nit.years.replace(/ /g, "")}
-              </p>
+              <p className="text-[12px] text-ink-soft">B.Tech, Mechanical · {nit.years.replace(/ /g, "")}</p>
             </div>
           </div>
         </Floating>
-        <Floating side="right" top="14%" delay={1.5}>
-          <p className="flex items-center gap-1.5 text-[12px] font-semibold text-accent">
-            <Sparkles size={13} /> Top skill
-          </p>
-          <p className="mt-1 text-[24px] leading-none font-extrabold tracking-[-0.04em] text-ink">{profile.topSkills[0]}</p>
-          <p className="mt-2 text-[12.5px] text-ink-soft">with {profile.topSkills.slice(1).join(" and ").toLowerCase()}</p>
-        </Floating>
-        <Floating side="right" top="60%" delay={1.8}>
-          <div className="flex items-center gap-3">
-            <IconBadge>
-              <BadgeCheck size={18} />
-            </IconBadge>
-            <div>
-              <p className="text-[14px] font-bold text-ink">Microsoft certified</p>
-              <p className="text-[12px] text-ink-soft">Azure Fundamentals</p>
+        {profile.awards.map((a, i) => (
+          <Floating key={a.name} side="right" top={i === 0 ? "14%" : "58%"} delay={1.5 + i * 0.3}>
+            <div className="flex items-center gap-3">
+              <IconBadge className={i === 0 ? "bg-accent text-white" : ""}>{i === 0 ? <Trophy size={18} /> : <Award size={18} />}</IconBadge>
+              <div>
+                <p className="text-[14px] font-bold text-ink">{a.name}</p>
+                <p className="text-[12px] text-ink-soft">
+                  {a.org} · {a.year}
+                </p>
+              </div>
             </div>
-          </div>
-        </Floating>
+          </Floating>
+        ))}
       </div>
     </section>
   );

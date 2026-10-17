@@ -1,8 +1,8 @@
-# pulkit
+# iampulkitsingh.github.io
 
-Live at https://www.luckysahani.com/pulkit/
+Live at https://iampulkitsingh.github.io/
 
-Work-profile site for Pulkit Singh, built from his LinkedIn profile.
+Work-profile site for Pulkit Singh, built from his LinkedIn profile and résumé.
 Vite + React 19 + Tailwind v4, with the motion and Magic UI pieces of the "Bento Studio" mock (number tickers, animated beams, border beam, shimmer button, marquee).
 
 ```bash
